@@ -9,7 +9,7 @@ using Random = UnityEngine.Random;
 public class DoorAction : MonoBehaviour
 {
     public Sprite[] doorTexture;
-    public Transform doorFront;
+    private Transform doorFront;
     public float nextOpenTime;
 
     public bool isOpen = false;
@@ -33,6 +33,13 @@ public class DoorAction : MonoBehaviour
         }
     }
     
+    private void changeDoorTextrue()
+    {
+        int imageIndex = Random.Range(0, doorTexture.Length);
+        SpriteRenderer spriteRenderer = doorFront.GetComponent<SpriteRenderer>();
+        spriteRenderer.sprite = doorTexture[imageIndex];
+    }
+    
     private void openDoor()
     {
         doorFront.position += new Vector3(0.3f, 0, 0);
@@ -42,10 +49,13 @@ public class DoorAction : MonoBehaviour
         isOpen = true;
     }
 
-    private void changeDoorTextrue()
+    public void closeDoor()
     {
-        int imageIndex = Random.Range(0, doorTexture.Length);
-        SpriteRenderer spriteRenderer = doorFront.GetComponent<SpriteRenderer>();
-        spriteRenderer.sprite = doorTexture[imageIndex];
+        doorFront.position -= new Vector3(0.3f, 0, 0);
+        float newX = doorFront.localScale.x / 0.7f;
+        doorFront.localScale = new Vector3(newX, 1, 1);
+        
+        nextOpenTime = Random.Range(5f, 10f);
+        isOpen = false;
     }
 }
