@@ -10,28 +10,42 @@ public class DoorAction : MonoBehaviour
 {
     public Sprite[] doorTexture;
     public Transform doorFront;
+    public float nextOpenTime;
+
+    public bool isOpen = false;
 
     private void Start()
     {
         doorFront = transform.Find("DoorFront");
-        // changeDoorTextrue();
-        Debug.Log(doorFront);
+        changeDoorTextrue();
+        nextOpenTime = Random.Range(5f, 10f);
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (nextOpenTime <= 0 && !isOpen)
         {
-            doorFront.position += new Vector3(0.3f, 0, 0);
-            float newX = doorFront.localScale.x * 0.7f;
-            doorFront.localScale = new Vector3(newX, 1, 1);
-            Debug.Log("변경");
+            openDoor();
         }
+        else if(!isOpen)
+        {
+            nextOpenTime -= Time.deltaTime;
+        }
+    }
+    
+    private void openDoor()
+    {
+        doorFront.position += new Vector3(0.3f, 0, 0);
+        float newX = doorFront.localScale.x * 0.7f;
+        doorFront.localScale = new Vector3(newX, 1, 1);
+
+        isOpen = true;
     }
 
     private void changeDoorTextrue()
     {
         int imageIndex = Random.Range(0, doorTexture.Length);
-        doorFront.GetComponent<Image>().sprite = doorTexture[imageIndex];
+        SpriteRenderer spriteRenderer = doorFront.GetComponent<SpriteRenderer>();
+        spriteRenderer.sprite = doorTexture[imageIndex];
     }
 }
