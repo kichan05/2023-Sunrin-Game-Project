@@ -16,6 +16,8 @@ public class DoorAction : MonoBehaviour
 
     private void Start()
     {
+        transform.Find("smoke").gameObject.SetActive(false);
+        
         doorFront = transform.Find("DoorFront");
         changeDoorTextrue();
         nextOpenTime = Random.Range(5f, 10f);
@@ -42,6 +44,9 @@ public class DoorAction : MonoBehaviour
     
     private void openDoor()
     {
+        transform.Find("smoke").gameObject.SetActive(true);
+        Debug.Log(transform.Find("smoke"));
+        
         doorFront.position += new Vector3(0.3f, 0, 0);
         float newX = doorFront.localScale.x * 0.7f;
         doorFront.localScale = new Vector3(newX, 1, 1);
@@ -51,6 +56,8 @@ public class DoorAction : MonoBehaviour
 
     public void closeDoor()
     {
+        transform.Find("smoke").gameObject.SetActive(false);
+        
         doorFront.position -= new Vector3(0.3f, 0, 0);
         float newX = doorFront.localScale.x / 0.7f;
         doorFront.localScale = new Vector3(newX, 1, 1);
